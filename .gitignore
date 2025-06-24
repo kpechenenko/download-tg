@@ -6,3 +6,4 @@ configs/kp_cfg.yaml
 venv
 .idea
 .code
+*.csv
