@@ -1,0 +1,8 @@
+*.session
+*.db
+*.log
+downloaded_videos/
+configs/kp_cfg.yaml
+venv
+.idea
+.code
