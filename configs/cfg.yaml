@@ -1,0 +1,18 @@
+user:
+  api_id: "example"
+  api_hash: "example"
+  phone_number: "+79998887766"
+  session_file: "session_name"
+
+app:
+  download_at_same_time_size: 5
+  log_file: "download_tg.log"
+
+search:
+  channel_id: 1337228
+  key_words:
+    - "b"
+
+storage:
+  sqlite_file: "local_db.db"
+  video_dir: "./downloaded_videos"

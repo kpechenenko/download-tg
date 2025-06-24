@@ -1,0 +1,12 @@
+annotated-types==0.7.0
+pyaes==1.6.1
+pyasn1==0.6.1
+pydantic==2.11.7
+pydantic-settings==2.10.0
+pydantic_core==2.33.2
+python-dotenv==1.1.0
+PyYAML==6.0.2
+rsa==4.9.1
+Telethon==1.40.0
+typing-inspection==0.4.1
+typing_extensions==4.14.0
