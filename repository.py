@@ -9,7 +9,9 @@ import typing as tp
 
 @dataclasses.dataclass
 class DownloadedVideo:
-    """Represents a video record in the database."""
+    """
+    Represents a video record in the database.
+    """
     id: str
     channel_id: int
     message_id: str
@@ -37,16 +39,16 @@ class SqliteVideoDownloadHistoryRepository:
 
     def _connect_and_init_db(self) -> sqlite3.Connection:
         """
-        Synchronous method to connect to the database and initialize the schema.
-        This method is designed to be run in a separate thread.
+        Establishes a synchronous connection to the SQLite database and initializes the schema if it does not exist.
+
+        This method is intended to be executed in a separate thread to avoid blocking the asyncio event loop.
+
+        :return: sqlite3.Connection - An open SQLite database connection with the required schema initialized.
         """
         self._log.info(f"Connecting to database at {self._filename}")
-        # `check_same_thread=False` is needed for this pattern, but access is
-        # still controlled by our own locking mechanism.
         conn = sqlite3.connect(self._filename, check_same_thread=False)
         conn.row_factory = sqlite3.Row
 
-        # Initialize schema
         cursor = conn.cursor()
         cursor.execute(
             """
@@ -68,24 +70,29 @@ class SqliteVideoDownloadHistoryRepository:
     async def _get_connection(self) -> sqlite3.Connection:
         """
         Asynchronously gets or creates a database connection.
+
         Ensures that the connection is established only once.
+
+        :return: sqlite3.Connection - An open SQLite database connection with the required schema initialized.
         """
         async with self._lock:
             if self._conn is None:
-                # Run the blocking database connection code in a separate thread
-                # to avoid blocking the asyncio event loop.
                 self._conn = await asyncio.to_thread(self._connect_and_init_db)
             return self._conn
 
     async def open_conn(self) -> None:
         """
         Explicitly opens and prepares the connection to the database.
+
+        :return:
         """
         await self._get_connection()
 
     async def close_conn(self) -> None:
         """
         Closes the connection to the database.
+
+        :return:
         """
         async with self._lock:
             if self._conn is not None:
@@ -94,7 +101,13 @@ class SqliteVideoDownloadHistoryRepository:
                 self._conn = None
 
     def _write_sync(self, conn: sqlite3.Connection, v: DownloadedVideo) -> None:
-        """Synchronous worker for writing a video record."""
+        """
+        Synchronous worker for writing a video record.
+
+        :param conn: The SQLite database connection.
+        :param v: The DownloadedVideo object to save.
+        :return:
+        """
         cursor = conn.cursor()
         cursor.execute(
             """
@@ -111,12 +124,19 @@ class SqliteVideoDownloadHistoryRepository:
         Asynchronously saves a new video record to the database.
 
         :param v: The DownloadedVideo object to save.
+        :return:
         """
         conn = await self._get_connection()
         await asyncio.to_thread(self._write_sync, conn, v)
 
     def _get_video_ids_sync(self, conn: sqlite3.Connection, channel_id: int) -> tp.Set[str]:
-        """Synchronous worker for retrieving video IDs."""
+        """
+        Synchronous worker for retrieving video IDs for a given channel.
+
+        :param conn: The SQLite database connection.
+        :param channel_id: The channel ID to query for.
+        :return: A set of unique video ID strings.
+        """
         cursor = conn.cursor()
         cursor.execute("SELECT filename FROM downloaded_videos WHERE channel_id = ?", (channel_id,))
         rows = cursor.fetchall()
@@ -138,8 +158,10 @@ class SqliteVideoDownloadHistoryRepository:
 
     async def _init_schema_if_necessary(self) -> None:
         """
-        This method is now handled internally by _get_connection and is kept
-        for backwards compatibility in case it was called elsewhere, though
-        it's now effectively a no-op that ensures a connection is open.
+        This method is retained for backward compatibility. 
+        Schema initialization is now automatically managed by _get_connection, 
+        so this function simply ensures a database connection is established.
+
+        :return:
         """
         await self._get_connection()

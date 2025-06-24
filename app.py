@@ -27,11 +27,21 @@ class DownloadVideoApp:
         )
 
     def _make_video_id(self, msg: custom.message.Message) -> str:
-        """Creates a unique identifier for a video based on channel, message, and video IDs."""
+        """
+        Creates a unique identifier for a video based on channel, message, and video IDs.
+
+        :param msg: The Telegram message object containing the video.
+        :return: A string representing the unique video identifier in the format 'channel_id.message_id.video_id'.
+        """
         return f"{self._cfg.search.channel_id}.{msg.id}.{getattr(msg.video, 'id', 'unknown')}"
 
     def _message_contains_all_keywords(self, msg: custom.message.Message) -> bool:
-        """Checks if the message text contains all specified keywords."""
+        """
+        Checks if the message text contains all specified keywords.
+
+        :param msg: The Telegram message to check for keywords.
+        :return: True if all specified keywords are present in the message text, False otherwise.
+        """
         if not self._cfg.search.key_words:
             return True
         if not msg.text:
@@ -47,8 +57,12 @@ class DownloadVideoApp:
             semaphore: asyncio.Semaphore
     ) -> bool:
         """
-        Acquires semaphore, downloads a single video, writes metadata to the repository, and releases semaphore.
-        Returns True on success, False on failure.
+        Acquires the semaphore, downloads a single video from the provided message, writes metadata to the repository, and releases the semaphore.
+
+        :param message: The Telegram message containing the video to download.
+        :param channel: The Telegram channel object from which the message was retrieved.
+        :param semaphore: An asyncio.Semaphore to limit concurrent downloads.
+        :return: True if the video was downloaded and processed successfully, False otherwise.
         """
         video_id = self._make_video_id(message)
         # Corrected to use cfg.database.video_dir for consistency with main.py
@@ -85,7 +99,9 @@ class DownloadVideoApp:
 
     async def download_and_save(self) -> None:
         """
-        Connects to Telegram, iterates through messages, and downloads videos concurrently.
+        Initiates the video download process by connecting to Telegram, scanning messages in the specified channel, and downloading new videos concurrently.
+
+        :return:
         """
         self._log.info("Starting video download process...")
 

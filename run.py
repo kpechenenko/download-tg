@@ -12,6 +12,10 @@ import app
 def setup_logging(log_file: str, log_level: int = logging.INFO) -> logging.Logger:
     """
     Configures logging to output to both the console and a specified log file.
+
+    :param log_file: Path to the log file where logs will be written.
+    :param log_level: Logging level (e.g., logging.INFO).
+    :return: Logger instance configured with console and file handlers.
     """
     log = logging.getLogger()
     log.setLevel(log_level)
@@ -33,9 +37,10 @@ def setup_logging(log_file: str, log_level: int = logging.INFO) -> logging.Logge
     return log
 
 
-async def main():
+async def main() -> None:
     """
     Main function to parse arguments, set up services, and run the download application.
+    :return:
     """
     parser = argparse.ArgumentParser(
         description="Download videos from a Telegram channel based on a config file."
