@@ -8,7 +8,11 @@ A utility for downloading restricted videos from private Telegram channels.
    ```bash
    python -m venv venv
    ```
-2. Install dependencies:
+2. Activate the environment:
+   ```bash
+   source venv/bin/activate
+   ```
+3. Install dependencies:
    ```bash
    python -m pip install -r requirements.txt
    ```
