@@ -65,7 +65,6 @@ class DownloadVideoApp:
         :return: True if the video was downloaded and processed successfully, False otherwise.
         """
         video_id = self._make_video_id(message)
-        # Corrected to use cfg.database.video_dir for consistency with main.py
         out_file = os.path.join(self._cfg.storage.video_dir, f"{video_id}.mp4")
 
         async with semaphore:
