@@ -1,6 +1,6 @@
 # download-tg
 
-A utility for downloading restricted videos from private Telegram channels.
+A utility for downloading restricted videos and audios from private Telegram channels.
 
 ## Installation
 
@@ -31,13 +31,14 @@ python run.py /path/to/your/config.yaml
 ## Configuration
 
 - The configuration file should be in YAML format. See the example: `configs/cfg.yaml`.
-- To get your `api_id` and `api_hash`, go to [https://my.telegram.org/](https://my.telegram.org/) and create your own application.
+- To get your `api_id` and `api_hash`, go to [https://my.telegram.org/](https://my.telegram.org/) and create your own
+  application.
 - **The `channel_id` must be specified as a number, without the '-' sign.**
 - You can extract the `channel_id` from the URL in the [web version of Telegram](https://web.telegram.org/k/).
 
 ## Exporting a Report
 
-To export the list of downloaded videos to a CSV file:
+To export the list of downloaded files to a CSV file:
 
 1. Open the SQLite database:
    ```bash

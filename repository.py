@@ -8,9 +8,9 @@ import typing as tp
 
 
 @dataclasses.dataclass
-class DownloadedVideo:
+class DownloadedFile:
     """
-    Represents a video record in the database.
+    Represents a file record in the database.
     """
     id: str
     channel_id: int
@@ -20,9 +20,9 @@ class DownloadedVideo:
     created: datetime.datetime
 
 
-class SqliteVideoDownloadHistoryRepository:
+class SqliteFileDownloadHistoryRepository:
     """
-    An asynchronous repository for storing video download history in an SQLite database.
+    An asynchronous repository for storing file download history in an SQLite database.
     It safely handles synchronous database operations in an asyncio environment.
     """
 
@@ -50,6 +50,7 @@ class SqliteVideoDownloadHistoryRepository:
         conn.row_factory = sqlite3.Row
 
         cursor = conn.cursor()
+        # table name is downloaded_videos for backward capability
         cursor.execute(
             """
             CREATE TABLE IF NOT EXISTS downloaded_videos (
@@ -100,7 +101,7 @@ class SqliteVideoDownloadHistoryRepository:
                 await asyncio.to_thread(self._conn.close)
                 self._conn = None
 
-    def _write_sync(self, conn: sqlite3.Connection, v: DownloadedVideo) -> None:
+    def _write_sync(self, conn: sqlite3.Connection, v: DownloadedFile) -> None:
         """
         Synchronous worker for writing a video record.
 
@@ -119,7 +120,7 @@ class SqliteVideoDownloadHistoryRepository:
         conn.commit()
         cursor.close()
 
-    async def write(self, v: DownloadedVideo) -> None:
+    async def write(self, v: DownloadedFile) -> None:
         """
         Asynchronously saves a new video record to the database.
 
@@ -145,9 +146,9 @@ class SqliteVideoDownloadHistoryRepository:
         ids = {os.path.splitext(os.path.basename(row["filename"]))[0] for row in rows}
         return ids
 
-    async def get_video_ids(self, channel_id: int) -> tp.Set[str]:
+    async def get_files_ids(self, channel_id: int) -> tp.Set[str]:
         """
-        Asynchronously retrieves the set of unique video identifiers for a given channel.
+        Asynchronously retrieves the set of unique file identifiers for a given channel.
         This is used to prevent re-downloading existing videos.
 
         :param channel_id: The channel ID to query for.

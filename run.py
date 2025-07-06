@@ -4,9 +4,9 @@ import logging
 import os
 import sys
 
+import app
 import config
 import repository
-import app
 
 
 def setup_logging(log_file: str, log_level: int = logging.INFO) -> logging.Logger:
@@ -43,7 +43,7 @@ async def main() -> None:
     :return:
     """
     parser = argparse.ArgumentParser(
-        description="Download videos from a Telegram channel based on a config file."
+        description="Download files from a Telegram channel based on a config file."
     )
     parser.add_argument(
         "config_path",
@@ -65,12 +65,15 @@ async def main() -> None:
     repo = None
     try:
         os.makedirs(cfg.storage.video_dir, exist_ok=True)
-        log.info(f"Video download directory set to: '{cfg.storage.video_dir}'")
+        log.info(f"Videos download directory set to: '{cfg.storage.video_dir}'")
 
-        repo = repository.SqliteVideoDownloadHistoryRepository(cfg.storage.sqlite_file)
+        os.makedirs(cfg.storage.audio_dir, exist_ok=True)
+        log.info(f"Audios download directory set to: '{cfg.storage.audio_dir}'")
+
+        repo = repository.SqliteFileDownloadHistoryRepository(cfg.storage.sqlite_file)
         log.info("Initialized database repository.")
 
-        downloader = app.DownloadVideoApp(repo, cfg, log)
+        downloader = app.DownloadFilesApp(repo, cfg, log)
         await downloader.download_and_save()
     except Exception:
         log.exception(f"critical error occurred in the application")

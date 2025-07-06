@@ -7,6 +7,8 @@ user:
 app:
   download_at_same_time_size: 5
   log_file: "download_tg.log"
+  download_video: true
+  download_audio: true
 
 search:
   channel_id: 1337228
@@ -16,3 +18,4 @@ search:
 storage:
   sqlite_file: "local_db.db"
   video_dir: "./downloaded_videos"
+  audio_dir: "./downloaded_audios"

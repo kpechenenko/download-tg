@@ -1,6 +1,7 @@
+import typing as tp
+
 import pydantic
 import yaml
-import typing as tp
 
 
 class User(pydantic.BaseModel):
@@ -19,6 +20,8 @@ class App(pydantic.BaseModel):
     """
     download_at_same_time_size: int
     log_file: str
+    download_video: bool
+    download_audio: bool
 
 
 class Search(pydantic.BaseModel):
@@ -26,7 +29,7 @@ class Search(pydantic.BaseModel):
     Configuration for search parameters.
     """
     channel_id: int
-    key_words: tp.Set[str]
+    key_words: tp.Optional[tp.Set[str]] = None
 
 
 class Storage(pydantic.BaseModel):
@@ -35,6 +38,7 @@ class Storage(pydantic.BaseModel):
     """
     sqlite_file: str
     video_dir: str
+    audio_dir: str
 
 
 class Config(pydantic.BaseModel):
