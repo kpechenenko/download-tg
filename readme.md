@@ -40,15 +40,6 @@ python run.py /path/to/your/config.yaml
 
 To export the list of downloaded files to a CSV file:
 
-1. Open the SQLite database:
    ```bash
-   sqlite3 local_db.db
-   ```
-2. In the SQLite prompt, run:
-   ```sql
-   .headers on
-   .mode csv
-   .output data.csv
-   select * from downloaded_videos;
-   .quit
+   sqlite3 -header -csv YOUR_SQLITE_DB_FILE.db "SELECT * FROM downloaded_videos;" > data.csv
    ```
