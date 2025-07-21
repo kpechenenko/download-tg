@@ -34,20 +34,27 @@ class DownloadFilesApp:
 
         :param obj: audio or video from message.
         :param default_extension: default file extension to return if obj does not contain file extension.
-        :return: extracted file extension
+        :return: extracted file extension without leading point.
         """
+        if default_extension.startswith('.'):
+            raise ValueError("extension with leading point")
+
         original_filename = None
         for attr in obj.attributes:
             if hasattr(attr, 'file_name'):
                 original_filename = attr.file_name
                 break
 
-        if original_filename:
-            try:
-                return os.path.splitext(original_filename)[1]
-            except:
-                return default_extension
-        return default_extension
+        if not original_filename:
+            return default_extension
+
+        _, extension = os.path.splitext(original_filename)
+        if not extension:
+            return default_extension
+        if extension.startswith('.'):
+            return extension[1:]
+
+        return extension
 
     def _make_video_id(self, msg: custom.message.Message) -> str:
         """
