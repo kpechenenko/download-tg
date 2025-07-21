@@ -99,7 +99,7 @@ class DownloadFilesApp:
             directory: str,
     ) -> bool:
         """
-        Acquires the semaphore, downloads a single audio from the provided message, writes metadata to the repository, and releases the semaphore.
+        Acquires the semaphore, downloads a single file from the provided message, writes metadata to the repository, and releases the semaphore.
 
         :param message: The Telegram message containing the file to download.
         :param channel: The Telegram channel object from which the message was retrieved.
