@@ -28,7 +28,7 @@ python run.py /path/to/your/config.yaml
 - On the first run, you will need to enter the authentication code from the Telegram app and your password.
 - After that, a session file will be saved and you won't need to enter anything again.
 
-## Configuration
+### Configuration
 
 - The configuration file should be in YAML format. See the example: `configs/cfg.yaml`.
 - To get your `api_id` and `api_hash`, go to [https://my.telegram.org/](https://my.telegram.org/) and create your own
@@ -36,7 +36,7 @@ python run.py /path/to/your/config.yaml
 - **The `channel_id` must be specified as a number, without the '-' sign.**
 - You can extract the `channel_id` from the URL in the [web version of Telegram](https://web.telegram.org/k/).
 
-## How to Fix Errors
+### How to Fix Errors
 
 Sometimes the TG API returns errors. You can run the script with automatic retries by using the following command:
 
@@ -48,10 +48,18 @@ This script will attempt to run `run.py` up to five times. It will break the loo
 succeeds.
 If it fails, it will wait for 30 seconds before retrying.
 
-## Exporting a Report
+### Exporting a Report
 
 To export the list of downloaded files to a CSV file:
 
    ```bash
    sqlite3 -header -csv YOUR_SQLITE_DB_FILE.db "SELECT * FROM downloaded_videos;" > data.csv
    ```
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+
+This project is licensed under the MIT License.
